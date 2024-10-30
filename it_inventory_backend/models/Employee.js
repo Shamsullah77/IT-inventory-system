@@ -1,26 +1,28 @@
+// models/Employee.js
 module.exports = (sequelize, DataTypes) => {
   const Employee = sequelize.define('Employee', {
-    employee_id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    job_title: DataTypes.STRING,
-    contact_number: DataTypes.STRING,
-    email: DataTypes.STRING,
+      EmployeeID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      DepartmentID: { 
+          type: DataTypes.INTEGER, 
+          references: { model: 'Departments', key: 'DepartmentID' } // Ensure model name is 'Departments'
+      },
+      DeputyID: { 
+          type: DataTypes.INTEGER, 
+          references: { model: 'Deputies', key: 'DeputyID' } // Ensure model name is 'Deputies'
+      },
+      Name: { type: DataTypes.STRING, allowNull: false },
+      Position: { type: DataTypes.STRING },
+      EmployeeCode: { type: DataTypes.STRING, unique: true },
+      PhoneNumber: { type: DataTypes.STRING },
+      Email: { type: DataTypes.STRING },
+      DateJoined: { type: DataTypes.DATE },
+      SupervisorID: { 
+          type: DataTypes.INTEGER, 
+          references: { model: 'Employees', key: 'EmployeeID' } // Self-reference to Employee table
+      }
+  }, {
+      tableName: 'Employees' // Explicit table name for the Employee model
   });
-
-  Employee.associate = (models) => {
-    Employee.belongsTo(models.Department, { foreignKey: 'department_id' });
-    Employee.belongsToMany(models.Product, {
-      through: models.ProductEmployee,
-      foreignKey: 'employee_id',
-    });
-  };
 
   return Employee;
 };

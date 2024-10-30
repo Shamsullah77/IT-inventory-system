@@ -1,21 +1,22 @@
+// models/Department.js
 module.exports = (sequelize, DataTypes) => {
   const Department = sequelize.define('Department', {
-    department_id: {
+    DepartmentID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    DirectorateID: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Directorates',
+        key: 'DirectorateID'
+      }
     },
-    description: DataTypes.TEXT,
+    Name: { type: DataTypes.STRING, allowNull: false }
+  }, {
+    tableName: 'Departments'
   });
-
-  Department.associate = (models) => {
-    Department.belongsTo(models.Directorate, { foreignKey: 'directorate_id' });
-    Department.hasMany(models.Employee, { foreignKey: 'department_id' });
-  };
 
   return Department;
 };

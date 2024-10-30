@@ -1,21 +1,19 @@
+// models/Directorate.js
 module.exports = (sequelize, DataTypes) => {
   const Directorate = sequelize.define('Directorate', {
-    directorate_id: {
+    DirectorateID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    DeputyID: {
+      type: DataTypes.INTEGER,
+      references: { model: 'Deputies', key: 'DeputyID' }
     },
-    description: DataTypes.TEXT,
+    Name: { type: DataTypes.STRING, allowNull: false },
+  }, {
+    tableName: 'Directorates'
   });
-
-  Directorate.associate = (models) => {
-    Directorate.belongsTo(models.Deputy, { foreignKey: 'deputy_id' });
-    Directorate.hasMany(models.Department, { foreignKey: 'directorate_id' });
-  };
 
   return Directorate;
 };
